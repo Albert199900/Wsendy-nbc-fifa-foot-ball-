@@ -3,194 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Ligi: Bongo vs Ulaya</title>
+    <title>Super Ligi Pro: Kukaba & Scoreboard</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #2e8b57;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-        }
-        .container {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 30px;
-            border-radius: 15px;
-            display: inline-block;
-            box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
-            max-width: 600px;
-            width: 100%;
-        }
-        h1 { color: #f1c40f; margin-bottom: 5px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #1a3c1a; color: white; text-align: center; margin: 0; overflow: hidden; }
         
-        /* Staili mpya ya Tangazo ili ivutie kubofya */
-        .adsterra-banner {
-            background-color: #ffeb3b;
-            color: #d35400;
-            padding: 15px;
-            margin: 0 auto 20px auto;
-            border-radius: 8px;
-            border: 2px dashed #e67e22;
-            font-weight: bold;
-            font-size: 18px;
-            cursor: pointer;
-            animation: pulse 2s infinite; /* Inafanya tangazo limweke kuvutia macho */
-        }
-        .adsterra-banner:hover {
-            background-color: #f1c40f;
-            transform: scale(1.02);
-            transition: 0.3s;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(230, 126, 34, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0); }
-        }
-
-        select {
-            font-size: 18px;
-            padding: 10px;
-            margin: 15px 5px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-        .vs { font-size: 24px; font-weight: bold; color: #e74c3c; }
-        
-        button {
-            font-size: 20px;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            margin: 5px;
-        }
-        .play-btn { background-color: #f1c40f; color: #111; width: 100%; margin-top: 20px; }
-        .play-btn:hover { background-color: #d4ac0d; transform: scale(1.02); }
-        
-        #result {
-            margin-top: 25px;
-            background-color: #fff;
-            color: #111;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-        }
-        .score { font-size: 36px; font-weight: bold; color: #2c3e50; }
-        .winner { font-size: 20px; margin-top: 10px; font-weight: bold; }
-
-        .action-buttons {
+        /* Ubao wa Matokeo wa Kisasa (TV Style) */
+        .scoreboard-container {
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 3px solid #f1c40f;
         }
-        .donate-btn { background-color: #27ae60; color: white; font-size: 16px; flex: 1; }
-        .share-btn { background-color: #2980b9; color: white; font-size: 16px; flex: 1; }
-        .donate-btn:hover { background-color: #2ecc71; }
-        .share-btn:hover { background-color: #3498db; }
+        .team-box { padding: 5px 15px; font-weight: bold; font-size: 20px; border-radius: 5px; }
+        .score-live { background: #000; padding: 5px 20px; font-size: 24px; color: #f1c40f; margin: 0 10px; border: 1px solid #444; }
+        .timer-box { font-size: 20px; margin-left: 20px; color: #ff4757; font-weight: bold; }
+
+        canvas { background-color: #27ae60; border: 5px solid #fff; display: block; margin: 10px auto; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        
+        .ad-link { display: block; padding: 10px; color: #ffeb3b; text-decoration: none; font-weight: bold; background: #c0392b; }
+
+        #setup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                 background: rgba(0,0,0,0.95); padding: 30px; border-radius: 15px; width: 350px; border: 3px solid #f1c40f; z-index: 100; }
+        input, select { padding: 12px; width: 90%; margin: 10px 0; border-radius: 5px; font-size: 16px; }
+        button { background: #f1c40f; padding: 12px 30px; border: none; font-weight: bold; cursor: pointer; font-size: 18px; border-radius: 5px; width: 100%; }
+        
+        .hint { color: #ccc; font-size: 14px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <a href="https://oddlystudent.com/tu1ixct1?key=bf9ebe5967e8fa09c93394892db398f0" target="_blank" style="text-decoration: none;">
-            <div class="adsterra-banner">
-                🎁 BONYEZA HAPA KUPATA OFA MAALUM YA LEO! 🎁<br>
-                <span style="font-size: 12px; font-weight: normal; color: #333;">(Tangazo)</span>
-            </div>
-        </a>
-        <h1>🏆 Super Ligi Simulator</h1>
-        <p>Panga mechi kati ya miamba ya soka!</p>
-        
-        <div>
-            <select id="team1"></select>
-            <span class="vs"> VS </span>
-            <select id="team2"></select>
-        </div>
-        
-        <button class="play-btn" onclick="playMatch()">⚽ Cheza Mechi!</button>
-        
-        <div id="result">
-            <div class="score" id="scoreDisplay">0 - 0</div>
-            <div class="winner" id="winnerText"></div>
-        </div>
+    <a href="https://oddlystudent.com/tu1ixct1?key=bf9ebe5967e8fa09c93394892db398f0" target="_blank" class="ad-link">
+        🔥 BOFYA HAPA: PATA ZAWADI ZA MB NA VOCHA! 🔥
+    </a>
 
-        <div class="action-buttons">
-            <button class="donate-btn" onclick="showDonate()">💰 Changia (Support)</button>
-            <button class="share-btn" onclick="shareGame()">🔗 Share na Wana</button>
-        </div>
+    <div class="scoreboard-container" id="score-ui" style="display: none;">
+        <div class="team-box" id="ui-my-team" style="background: #2980b9;">YANGA</div>
+        <div class="score-live" id="live-score">0 - 0</div>
+        <div class="team-box" id="ui-opp-team" style="background: #c0392b;">SIMBA</div>
+        <div class="timer-box" id="ui-timer">01:00</div>
     </div>
 
+    <div id="setup">
+        <h2>🏆 Super Ligi Pro</h2>
+        <input type="text" id="playerName" placeholder="Jina lako (mf. Maxi, Chama)">
+        <select id="myTeamSelect">
+            <option value="YANGA SC">YANGA SC</option>
+            <option value="SIMBA SC">SIMBA SC</option>
+            <option value="AZAM FC">AZAM FC</option>
+            <option value="T. STARS">TAIFA STARS</option>
+            <option value="BARCA">BARCELONA</option>
+        </select>
+        <p>DHIDI YA</p>
+        <select id="oppTeamSelect">
+            <option value="SIMBA SC">SIMBA SC</option>
+            <option value="YANGA SC">YANGA SC</option>
+            <option value="CHELSEA">CHELSEA</option>
+            <option value="LIVERPOOL">LIVERPOOL</option>
+        </select>
+        <button onclick="startGame()">ANZA MECHI</button>
+        <div class="hint">KUKABA: Sogelea adui | SHUTI: Space | TEMBEA: Arrows</div>
+    </div>
+
+    <canvas id="field"></canvas>
+
     <script>
-        const teams = [
-            "Yanga SC", "Simba SC", "Taifa Stars", "Azam FC", 
-            "Singida", "TRA FC", "Namungo FC", "Barcelona", 
-            "Chelsea", "Bayern Munich", "Liverpool", "AS Roma"
+        const canvas = document.getElementById('field');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 400;
+
+        let gameRunning = false;
+        let timeLeft = 60;
+        let myScore = 0;
+        let oppScore = 0;
+        let myTeamName = "";
+        let oppTeamName = "";
+
+        let keys = {};
+        window.addEventListener('keydown', e => keys[e.code] = true);
+        window.addEventListener('keyup', e => keys[e.code] = false);
+
+        let ball = { x: 400, y: 200, vx: 0, vy: 0, radius: 7 };
+        let player = { x: 150, y: 200, speed: 4.5, size: 14, name: "" };
+        let opponents = [
+            { x: 600, y: 100, speed: 2.2 },
+            { x: 600, y: 300, speed: 2.2 },
+            { x: 760, y: 200, speed: 1.5, isGK: true }
         ];
 
-        const team1Select = document.getElementById("team1");
-        const team2Select = document.getElementById("team2");
+        function startGame() {
+            player.name = document.getElementById('playerName').value || "Star";
+            myTeamName = document.getElementById('myTeamSelect').value;
+            oppTeamName = document.getElementById('oppTeamSelect').value;
 
-        teams.forEach(team => {
-            team1Select.add(new Option(team, team));
-            team2Select.add(new Option(team, team));
-        });
+            document.getElementById('ui-my-team').innerText = myTeamName;
+            document.getElementById('ui-opp-team').innerText = oppTeamName;
+            
+            document.getElementById('setup').style.display = "none";
+            document.getElementById('score-ui').style.display = "flex";
+            gameRunning = true;
+            
+            setInterval(() => {
+                if(timeLeft > 0 && gameRunning) {
+                    timeLeft--;
+                    let mins = Math.floor(timeLeft / 60);
+                    let secs = timeLeft % 60;
+                    document.getElementById('ui-timer').innerText = 
+                        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                } else if (timeLeft === 0 && gameRunning) {
+                    gameRunning = false;
+                    alert(`MPIRA UMEISHA!\n${myTeamName} ${myScore} - ${oppScore} ${oppTeamName}\n\nChangia kukuza game: 0627962633`);
+                    location.reload();
+                }
+            }, 1000);
 
-        team2Select.selectedIndex = 1;
-
-        function playMatch() {
-            let t1 = team1Select.value;
-            let t2 = team2Select.value;
-            let resultDiv = document.getElementById("result");
-            let scoreDisplay = document.getElementById("scoreDisplay");
-            let winnerText = document.getElementById("winnerText");
-
-            if (t1 === t2) {
-                alert("⚠ Tafadhali chagua timu mbili tofauti!");
-                return;
-            }
-
-            let goals1 = Math.floor(Math.random() * 5);
-            let goals2 = Math.floor(Math.random() * 5);
-
-            scoreDisplay.innerHTML = `${t1} <b>${goals1} - ${goals2}</b> ${t2}`;
-
-            if (goals1 > goals2) {
-                winnerText.innerHTML = `🎉 Mshindi ni ${t1}!`;
-                winnerText.style.color = "#27ae60"; 
-            } else if (goals2 > goals1) {
-                winnerText.innerHTML = `🎉 Mshindi ni ${t2}!`;
-                winnerText.style.color = "#27ae60"; 
-            } else {
-                winnerText.innerHTML = "🤝 Mechi imeisha kwa Sare (Ngoma Droo)!";
-                winnerText.style.color = "#e67e22"; 
-            }
-
-            resultDiv.style.display = "block";
+            update();
         }
 
-        function showDonate() {
-            alert("Asante kwa kusapoti! Ili game iendelee kuwa hewani, unaweza kutuma mchango wako kupitia:\n\nLipa Namba (M-Pesa): 1234567\nJina: Jina Lako Hapa");
+        function update() {
+            if(!gameRunning) return;
+
+            // Kontroli za Mchezaji
+            if(keys['ArrowUp'] && player.y > 15) player.y -= player.speed;
+            if(keys['ArrowDown'] && player.y < canvas.height - 15) player.y += player.speed;
+            if(keys['ArrowLeft'] && player.x > 15) player.x -= player.speed;
+            if(keys['ArrowRight'] && player.x < canvas.width - 15) player.x += player.speed;
+
+            // Physics ya Mpira
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            ball.vx *= 0.985;
+            ball.vy *= 0.985;
+
+            // KUKABA NA KUCHENGA (Player)
+            let distToBall = Math.hypot(ball.x - player.x, ball.y - player.y);
+            if(distToBall < 25) {
+                // Mpira unakaa mbele ya mchezaji (Dribbling)
+                ball.vx = (ball.x - player.x) * 0.3;
+                ball.vy = (ball.y - player.y) * 0.3;
+                
+                // PIGA SHUTI
+                if(keys['Space']) {
+                    ball.vx = 18; // Shuti la nguvu
+                    ball.vy = (Math.random() - 0.5) * 6;
+                }
+            }
+
+            // AI YA WAPINZANI (Kukaba)
+            opponents.forEach(opp => {
+                let distOppToBall = Math.hypot(ball.x - opp.x, ball.y - opp.y);
+                
+                // Mpinzani anakufuata au anafuata mpira
+                let targetX = ball.x;
+                let targetY = ball.y;
+                
+                let dx = targetX - opp.x;
+                let dy = targetY - opp.y;
+                let angle = Math.atan2(dy, dx);
+                
+                opp.x += Math.cos(angle) * opp.speed;
+                opp.y += Math.sin(angle) * opp.speed;
+
+                // Mpinzani akikaba (Anapiga mpira kuelekea goli lako)
+                if(distOppToBall < 18) {
+                    ball.vx = -7;
+                    ball.vy = (Math.random() - 0.5) * 8;
+                }
+            });
+
+            // GOLI KULIA (Unashambulia)
+            if(ball.x > canvas.width - 15 && ball.y > 140 && ball.y < 260) {
+                myScore++;
+                resetBall();
+            }
+            // GOLI KUSHOTO (Unashambuliwa)
+            if(ball.x < 15 && ball.y > 140 && ball.y < 260) {
+                oppScore++;
+                resetBall();
+            }
+
+            // Mipaka
+            if(ball.y < 10 || ball.y > canvas.height - 10) ball.vy *= -1;
+            if(ball.x < 10 || ball.x > canvas.width - 10) ball.vx *= -1;
+
+            document.getElementById('live-score').innerText = `${myScore} - ${oppScore}`;
+            
+            draw();
+            requestAnimationFrame(update);
         }
 
-        function shareGame() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Super Ligi Simulator',
-                    text: 'Njoo ucheze game hii ya kupanga mechi za Bongo vs Ulaya!',
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                alert("Nakili link hii na uwasambazie washkaji WhatsApp: " + window.location.href);
-            }
+        function resetBall() {
+            ball.x = 400; ball.y = 200; ball.vx = 0; ball.vy = 0;
+            player.x = 150; player.y = 200;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Uwanja Lines
+            ctx.strokeStyle = "rgba(255,255,255,0.6)";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(10, 10, canvas.width-20, canvas.height-20);
+            ctx.beginPath(); ctx.moveTo(400,10); ctx.lineTo(400,390); ctx.stroke();
+            ctx.beginPath(); ctx.arc(400, 200, 50, 0, Math.PI*2); ctx.stroke();
+            
+            // Magoli (Boxes)
+            ctx.strokeRect(10, 120, 60, 160);
+            ctx.strokeRect(730, 120, 60, 160);
+
+            // Mpira
+            ctx.shadowBlur = 10; ctx.shadowColor = "black";
+            ctx.fillStyle = "white";
+            ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Player (Wewe)
+            ctx.fillStyle = "#f1c40f"; // Njano/Gold
+            ctx.beginPath(); ctx.arc(player.x, player.y, player.size, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = "white";
+            ctx.font = "bold 12px Arial";
+            ctx.fillText(player.name, player.x - 15, player.y - 20);
+
+            // Maadui
+            ctx.fillStyle = "#e74c3c";
+            opponents.forEach(opp => {
+                ctx.beginPath(); ctx.arc(opp.x, opp.y, 14, 0, Math.PI*2); ctx.fill();
+                if(opp.isGK) {
+                    ctx.fillStyle = "black";
+                    ctx.fillText("GK", opp.x - 8, opp.y + 5);
+                    ctx.fillStyle = "#e74c3c";
+                }
+            });
         }
     </script>
-
 </body>
 </html>
